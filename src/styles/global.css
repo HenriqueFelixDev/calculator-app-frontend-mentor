@@ -1,0 +1,27 @@
+@import url('./normalize.css');
+@import url('./colors.css');
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+#root {
+    flex: 1;
+    max-width: 450px;
+    padding: 1.5rem;
+}
+
+body {
+    background: var(--main-background);
+    color: var(--body-text);
+    font-family: 'League Spartan', sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
