@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Switch, SwitchLabels, ThemeSwitchContainer, Thumb, Title } from './styles'
 
 const INPUT_WIDTH = 16
 const SWITCH_PADDING = 4.8
 
-const SwitchInput = ({onChange, value}) => (
+const SwitchInput = ({onChange, value}: React.InputHTMLAttributes<HTMLInputElement>) => (
     <input
         type="radio"
         name="switch"
@@ -14,14 +14,14 @@ const SwitchInput = ({onChange, value}) => (
 )
 
 export const ThemeSwitch = () => {
-    const [theme, setTheme] = useState(0)
+    const [theme, setTheme] = useState<number>(0)
 
     useEffect(() => {
         document.body.classList.remove(...document.body.classList.values())
         document.body.classList.add(`theme-${theme + 1}`)
     }, [theme])
 
-    const handleSwitchChange = event =>
+    const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTheme(Number(event.target.value))
 
     const thumbPosition = theme * INPUT_WIDTH + SWITCH_PADDING

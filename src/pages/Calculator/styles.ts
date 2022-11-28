@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { IKey } from './types'
 
 export const Header = styled.header`
     display: flex;
@@ -37,43 +38,56 @@ export const Keyboard = styled.section`
     margin: 1rem 0;
 `
 
-export const Key = styled.button`
+export const Key = styled.button<IKey>`
     cursor: pointer;
     height: 3rem;
     border: none;
     border-radius: 0.5rem;
-    font-size: 1.5rem;
-    line-height: 3rem;
+    font-size: ${({styleType}) =>
+        styleType === 'action' ? '1.2rem' : '1.5rem'
+    };
+    line-height: ${({styleType}) =>
+        styleType === 'action' ? '3.2rem' : '3rem'
+    };
     text-transform: uppercase;
     transition: all .15s linear;
     grid-column: ${ ({gridColumn}) => gridColumn ?? 'auto' };
 
-    ${({styleType = 'default'}) => {
+    background: ${({styleType}) => {
         if (styleType === 'action') {
-            return css`
-                font-size: 1.2rem;
-                line-height: 3.2rem;
-                background: var(--action-key-background);
-                color: var(--action-key-text);
-                box-shadow: 0 4px 1px var(--action-key-shadow);
-            `
+            return 'var(--action-key-background)'
+        }
+        
+        if (styleType === 'equal') {
+            return 'var(--equal-key-background)'
+        }
+
+        return 'var(--key-background)'
+    }};
+    
+    color: ${({styleType}) => {
+        if (styleType === 'action') {
+            return 'var(--action-key-text)'
+        }
+        
+        if (styleType === 'equal') {
+            return 'var(--equal-key-text)'
+        }
+
+        return 'var(--key-text)'
+    }};
+
+    box-shadow: 0 4px 1px ${({styleType}) => {
+        if (styleType === 'action') {
+            return 'var(--action-key-shadow)'
         }
 
         if (styleType === 'equal') {
-            return css`
-                background: var(--equal-key-background);
-                color: var(--equal-key-text);
-                box-shadow: 0 4px 1px var(--equal-key-shadow);
-                
-            `
+            return 'var(--equal-key-shadow)'
         }
 
-        return css`
-            background: var(--key-background);
-            color: var(--key-text);
-            box-shadow: 0 4px 1px var(--key-shadow);
-        `
-    }}
+        return 'var(--key-shadow)'
+    }};
 
     &:hover {
         filter: brightness(1.4);

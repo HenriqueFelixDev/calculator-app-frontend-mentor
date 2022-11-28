@@ -28,8 +28,12 @@ export const CalculatorPage = () => (
                 <Key>0</Key>
                 <Key>/</Key>
                 <Key>x</Key>
-                <Key styleType="action" gridColumn="1 / span 2">Reset</Key>
-                <Key styleType="equal" gridColumn="3 / span 2">=</Key>
+                <Key styleType="action" gridColumn="1 / span 2">
+                    Reset
+                </Key>
+                <Key styleType="equal" gridColumn="3 / span 2">
+                    =
+                </Key>
             </Keyboard>
         </Container>
     </>
