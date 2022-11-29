@@ -1,30 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Switch, SwitchLabels, ThemeSwitchContainer, Thumb, Title } from './styles'
+import React, { useEffect, useMemo, useState } from 'react'
 
-const INPUT_WIDTH = 16
-const SWITCH_PADDING = 4.8
+import { getSavedTheme, saveTheme } from '../../services/ThemeService'
+import { Switch, SwitchInput, SwitchLabels, ThemeSwitchContainer, Thumb, Title } from './styles'
+import { Themes } from './types'
 
-const SwitchInput = ({onChange, value}: React.InputHTMLAttributes<HTMLInputElement>) => (
-    <input
-        type="radio"
-        name="switch"
-        onChange={onChange}
-        value={value}
-    />
-)
+const INPUT_WIDTH = 1.5
+const SWITCH_PADDING = 0.5
 
 export const ThemeSwitch = () => {
-    const [theme, setTheme] = useState<number>(0)
+    const getInitialTheme = () => {
+        const savedTheme = getSavedTheme()
+
+        if (savedTheme) return savedTheme
+
+        const prefersDarkTheme = matchMedia('(prefers-color-scheme: dark)').matches
+
+        return prefersDarkTheme ? Themes.DARK : Themes.LIGHT
+    }
+    
+    const [theme, setTheme] = useState<number>(getInitialTheme())
 
     useEffect(() => {
-        document.body.classList.remove(...document.body.classList.values())
-        document.body.classList.add(`theme-${theme + 1}`)
+        document.body.classList.remove(...document.body.classList)
+        document.body.classList.add(`theme-${theme}`)
+        saveTheme(theme)
     }, [theme])
 
     const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTheme(Number(event.target.value))
 
-    const thumbPosition = theme * INPUT_WIDTH + SWITCH_PADDING
+    const thumbPosition = useMemo(() => {
+        return (theme - 1) * INPUT_WIDTH + SWITCH_PADDING
+    }, [theme])
 
     return (
         <ThemeSwitchContainer>
@@ -36,11 +43,28 @@ export const ThemeSwitch = () => {
                     <span>3</span>
                 </SwitchLabels>
                 <Switch>
-                    <Thumb style={{left: thumbPosition}} />
+                    <Thumb style={{left: `${thumbPosition}rem`}} />
 
-                    <SwitchInput onChange={handleSwitchChange} value={0} />
-                    <SwitchInput onChange={handleSwitchChange} value={1} />
-                    <SwitchInput onChange={handleSwitchChange} value={2} />
+                    <SwitchInput
+                        type="radio"
+                        name="switch"
+                        onChange={handleSwitchChange}
+                        value={Themes.DARK}
+                    />
+                    
+                    <SwitchInput
+                        type="radio"
+                        name="switch"
+                        onChange={handleSwitchChange}
+                        value={Themes.LIGHT}
+                    />
+
+                    <SwitchInput
+                        type="radio"
+                        name="switch"
+                        onChange={handleSwitchChange}
+                        value={Themes.ALTERNATIVE_DARK}
+                    />
                 </Switch>
             </div>
         </ThemeSwitchContainer>

@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { CalculatorPage } from './pages/Calculator'
+import { App } from './App'
 
-import './styles/global.css'
+import './global.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as Element)
 
 root.render(
   <React.StrictMode>
-    <CalculatorPage />
+    <App />
   </React.StrictMode>
 )
